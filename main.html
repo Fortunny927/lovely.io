@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мини-эпп в Telegram</title>
+    <style>
+        body {
+            background-color: #ffccdd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+        .button {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #ff99cc;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s ease;
+        }
+        .button:active {
+            background-color: #ff66b2;
+        }
+        .heart {
+            display: none;
+            font-size: 48px;
+            color: #ff66b2;
+            position: absolute;
+            transform: scale(0);
+            transition: transform 0.5s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .heart.show {
+            display: flex;
+            transform: scale(1);
+        }
+        .message {
+            display: none;
+            font-size: 24px;
+            color: #ff66b2;
+            opacity: 1;
+            margin-top: -10px;
+        }
+        .sparkles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ff66b2;
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+        }
+        @keyframes sparkle {
+            0% { opacity: 1; transform: scale(0); }
+            50% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="button" id="button">💖</button>
+    <div class="heart" id="heart">
+        <div class="message" id="message">Я тебя люблю</div>
+        ❤️
+    </div>
+    <div class="sparkles" id="sparkles"></div>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        const button = document.getElementById('button');
+        const heart = document.getElementById('heart');
+        const message = document.getElementById('message');
+        const sparklesContainer = document.getElementById('sparkles');
+
+        button.addEventListener('click', () => {
+            button.style.transform = 'scale(0)';
+            heart.classList.add('show');
+            setTimeout(() => {
+                message.style.display = 'block';
+                createSparkles();
+            }, 500);
+        });
+
+        function createSparkles() {
+            const numSparkles = 30;
+            for (let i = 0; i < numSparkles; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                sparkle.style.top = `${Math.random() * 100}%`;
+                sparkle.style.left = `${Math.random() * 100}%`;
+                sparkle.style.animationDelay = `${Math.random() * 2}s`;
+                sparklesContainer.appendChild(sparkle);
+            }
+        }
+    </script>
+
+</body>
+</html>
